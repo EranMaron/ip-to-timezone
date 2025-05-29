@@ -1,9 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
-
-type TTimeControlContext = {
-  startInterval: () => void;
-  stopInterval: () => void;
-};
+import type { TTimeControlContext } from '../types/types';
 
 const TimeContext = createContext<Date>(new Date());
 const TimeControlContext = createContext<TTimeControlContext>({ startInterval: () => { }, stopInterval: () => { } });

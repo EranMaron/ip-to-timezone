@@ -4,27 +4,9 @@ import { formatTime, isValidIp } from '../utils/helpers';
 import styles from '../styles/IpRow.module.css';
 import { useEffect } from 'react';
 import { FLAG_CDN_URL, SINGLE_TIME_ZONE_API_URL } from '../utils/consts';
+import type { TIpRowProps, TFormValues } from '../types/types';
 
-type IPRowProps = {
-  id: string;
-  index: number;
-  data: {
-    ip: string;
-    country?: string;
-    countryCode?: string;
-    timezone?: string;
-    isLoading?: boolean
-    error?: string;
-  };
-  handleUpdate: (id: string, ip: string, country: string, countryCode: string, timezone: string) => void;
-  handleRemove: (id: string) => void;
-};
-
-type FormValues = {
-  ip: string;
-};
-
-const IpRow: React.FC<IPRowProps> = ({ id, index, data, handleUpdate, handleRemove }) => {
+const IpRow: React.FC<TIpRowProps> = ({ id, index, data, handleUpdate, handleRemove }) => {
   const {
     register,
     handleSubmit,
@@ -32,7 +14,7 @@ const IpRow: React.FC<IPRowProps> = ({ id, index, data, handleUpdate, handleRemo
     setError,
     clearErrors,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({ mode: 'onBlur', defaultValues: { ip: data.ip } });
+  } = useForm<TFormValues>({ mode: 'onBlur', defaultValues: { ip: data.ip } });
 
   useTime();
 
@@ -74,7 +56,9 @@ const IpRow: React.FC<IPRowProps> = ({ id, index, data, handleUpdate, handleRemo
       } else {
         handleUpdate(id, trimmedIp, country, countryCode, timezone);
       }
-    } catch (err) {
+    } catch (error) {
+      console.error('Error fetching timezone:', error);
+
       setError("ip", {
         type: "manual",
         message: "Network error",

@@ -3,32 +3,25 @@ import IpRow from "./IpRow";
 import { useTimeControl } from "../context/timeContext";
 import styles from "../styles/IpsCard.module.css";
 import { BATCH_TIME_ZONE_API_URL } from '../utils/consts';
-
-type TFeild = {
-  id: string;
-  ip: string;
-  country?: string;
-  timezone?: string;
-  error?: string;
-  isLoading?: boolean;
-};
+import type { TField } from '../types/types';
+import { loadFromLocalStorage, saveToLocalStorage } from '../utils/helpers';
 
 export const IpsCard: React.FC = () => {
-  const [ipRows, setIpRows] = useState<TFeild[]>([]);
+  const [ipRows, setIpRows] = useState<TField[]>(loadFromLocalStorage());
   const [isSyncing, setIsSyncing] = useState(false);
 
   const { startInterval, stopInterval } = useTimeControl();
 
   useEffect(() => {
-    if (ipRows.length === 0) {
-      setIsSyncing(true);
-    } else {
-      setIsSyncing(false);
-    }
+    saveToLocalStorage(ipRows);
+  }, [ipRows]);
+
+  useEffect(() => {
+    setIsSyncing(ipRows.length === 0);
   }, [ipRows]);
 
   const addRow = () => {
-    const newRow: TFeild = {
+    const newRow: TField = {
       id: crypto.randomUUID(),
       ip: "",
     };
@@ -74,7 +67,7 @@ export const IpsCard: React.FC = () => {
 
       const data = await response.json();
 
-      const resultMap = new Map<string, any>();
+      const resultMap = new Map<string, Record<string, string>>();
 
       for (const result of data) {
         resultMap.set(result.query, result);
@@ -106,7 +99,7 @@ export const IpsCard: React.FC = () => {
               error: undefined,
             };
           } else {
-            return { ...row, isLoading: false, error: result?.message || 'Invalid IP address' };
+            return { ...row, isLoading: false, error: 'Invalid IP address' };
           }
         })
       );

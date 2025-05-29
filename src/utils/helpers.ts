@@ -1,3 +1,25 @@
+import type { TField } from '../types/types';
+
+const STORAGE_KEY = 'ip-lookup-data';
+
+export const saveToLocalStorage = (data: TField[]) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving to localStorage:', error);
+  }
+};
+
+export const loadFromLocalStorage = (): TField[] => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    console.error('Error loading from localStorage:', error);
+    return [];
+  }
+};
+
 export const formatTime = (timezone: string): string => {
   try {
     return new Date().toLocaleTimeString('en-US', {
@@ -7,8 +29,10 @@ export const formatTime = (timezone: string): string => {
       minute: '2-digit',
       second: '2-digit'
     });
-  } catch (e) {
-    return "--:--:--";
+  } catch (error) {
+    console.error('Error formatting time:', error);
+
+    return "N/A";
   }
 };
 
