@@ -1,0 +1,62 @@
+.row {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.row label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  font-size: 1.6rem;
+  border-radius: 50%;
+  background: #d6d6d6;
+}
+
+input {
+  padding: 0.8rem;
+  border: 1px solid #b4b4b4;
+  border-radius: 0.4rem;
+  font-size: 1.6rem;
+  color: #3d3d3d;
+  background: #fcfcfc;
+  outline: none;
+  transition: border 0.3s ease;
+
+  &:focus {
+    border-color: #509dcf;
+  }
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.info p {
+  font-size: 1.6rem;
+  color: #3d3d3d;
+  font-weight: 600;
+}
+
+.info p.error {
+  color: #af0909;
+}
+
+.time {
+  font-size: 1.6rem;
+  color: #3d3d3d;
+  font-weight: 600;
+}
+
+.remove_btn {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #af0909;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
