@@ -1,0 +1,77 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  width: 30%;
+  margin: 8rem auto;
+  padding: 1.6rem;
+  background: #fcfcfc;
+  border: 1px solid #636363;
+  border-radius: 8px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.8rem;
+  color: #3d3d3d;
+  border-bottom: 1px solid #b4b4b4;
+}
+
+.actions {
+  display: flex;
+  gap: 1.6rem;
+  width: 100%;
+}
+
+.actions button {
+  width: fit-content;
+  margin: 1.6rem 0;
+  padding: 0.8rem 1.6rem;
+  font-size: 1.6rem;
+  color: #fff;
+  cursor: pointer;
+  background: #509dcf;
+  border: none;
+  border-radius: 0.4rem;
+  transition: background 0.4s ease;
+
+  &:hover {
+    background: #407fa5;
+  }
+
+  &:active {
+    background: #306d85;
+  }
+
+  &:disabled {
+    background: #b4b4b4;
+    cursor: not-allowed;
+  }
+
+  &::after {
+    margin-left: 0.8rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+}
+
+.sync_btn::after {
+  content: '↻';
+}
+
+.add_btn::after {
+  content: '+';
+}
+
+.ips_list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  width: 85%;
+  max-height: 50vh;
+  overflow-y: auto;
+}
