@@ -22,6 +22,8 @@ npm run dev
 
 The app will be available at `http://localhost:5173`
 
+You can also try the live demo at: https://eranmaron.github.io/ip-to-timezone/
+
 ## Features
 
 - Enter multiple IPv4 or IPv6 addresses
@@ -55,4 +57,4 @@ npm run lint             # ESLint
 - Vite + Vitest
 - React Hook Form
 - CSS Modules
-- GitHub Actions CI/CD
+- GitHub Actions CI/CD with GitHub Pages deployment
