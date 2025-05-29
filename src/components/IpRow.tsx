@@ -3,7 +3,7 @@ import { useTime } from '../context/timeContext';
 import { formatTime, isValidIp } from '../utils/helpers';
 import styles from '../styles/IpRow.module.css';
 import { useEffect } from 'react';
-import { FLAG_CDN_URL, SINGLE_TIME_ZONE_API_URL } from '../utils/consts';
+import { FLAG_CDN_URL, IP_FIELDS, SINGLE_TIME_ZONE_API_URL } from '../utils/consts';
 
 type IPRowProps = {
   id: string;
@@ -61,7 +61,7 @@ const IpRow: React.FC<IPRowProps> = ({ id, index, data, handleUpdate, handleRemo
     clearErrors("ip");
 
     try {
-      const res = await fetch(`${SINGLE_TIME_ZONE_API_URL}${trimmedIp}`);
+      const res = await fetch(`${SINGLE_TIME_ZONE_API_URL}${trimmedIp}?fields=${IP_FIELDS}`);
       const { status, message, country, countryCode, timezone } = await res.json();
 
       if (status === "fail") {
@@ -74,7 +74,8 @@ const IpRow: React.FC<IPRowProps> = ({ id, index, data, handleUpdate, handleRemo
       } else {
         handleUpdate(id, trimmedIp, country, countryCode, timezone);
       }
-    } catch (err) {
+    } catch (error) {
+      console.error(error);
       setError("ip", {
         type: "manual",
         message: "Network error",
@@ -84,8 +85,15 @@ const IpRow: React.FC<IPRowProps> = ({ id, index, data, handleUpdate, handleRemo
 
   return (
     <div className={styles.row}>
-      <label>{index}</label>
+      <label
+        htmlFor={`ip-input-${id}`}
+        data-testid="ip-row-label"
+      >
+        {index}
+      </label>
       <input
+        id={`ip-input-${id}`}
+        data-testid="ip-input"
         value={ipValue}
         disabled={isSubmitting}
         autoFocus
@@ -102,18 +110,19 @@ const IpRow: React.FC<IPRowProps> = ({ id, index, data, handleUpdate, handleRemo
         onBlur={handleSubmit(handleBlur)}
       />
       <div className={styles.info}>
-        <button className={styles.remove_btn} onClick={() => handleRemove(id)}>X</button>
+        <button className={styles.remove_btn} data-testid="remove-button" onClick={() => handleRemove(id)}>X</button>
         {(isSubmitting || data.isLoading) && <p>Looking up...</p>}
         {data.timezone && data.countryCode && !data.isLoading && (
           <>
             <img
+              data-testid="country-flag"
               src={`${FLAG_CDN_URL}${data.countryCode?.toLowerCase()}.webp`}
               alt={data.country}
             />
-            <p className={styles.time}>{localTime || ''}</p>
+            <p data-testid="local-time" className={styles.time}>{localTime || ''}</p>
           </>
         )}
-        {errors.ip && <p className={styles.error}>{errors.ip.message}</p>}
+        {errors.ip && <p data-testid="error-message" className={styles.error}>{errors.ip.message}</p>}
       </div>
     </div>
   )

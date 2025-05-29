@@ -1,12 +1,18 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 
 type TTimeControlContext = {
   startInterval: () => void;
   stopInterval: () => void;
 };
 
-const TimeContext = createContext<Date>(new Date());
-const TimeControlContext = createContext<TTimeControlContext>({ startInterval: () => { }, stopInterval: () => { } });
+const TimeContext = createContext<Date | null>(null);
+const TimeControlContext = createContext<TTimeControlContext | null>(null);
 
 export const TimeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [time, setTime] = useState(new Date());
@@ -25,7 +31,6 @@ export const TimeProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const stopInterval = () => {
     if (intervalId.current) {
       clearInterval(intervalId.current);
-
       intervalId.current = null;
     }
   };
@@ -43,5 +48,18 @@ export const TimeProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-export const useTime = () => useContext(TimeContext);
-export const useTimeControl = () => useContext(TimeControlContext);
+export const useTime = () => {
+  const context = useContext(TimeContext);
+  if (context === null) {
+    throw new Error('useTime must be used within a TimeProvider');
+  }
+  return context;
+};
+
+export const useTimeControl = () => {
+  const context = useContext(TimeControlContext);
+  if (context === null) {
+    throw new Error('useTimeControl must be used within a TimeProvider');
+  }
+  return context;
+};

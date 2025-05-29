@@ -7,8 +7,10 @@ export const formatTime = (timezone: string): string => {
       minute: '2-digit',
       second: '2-digit'
     });
-  } catch (e) {
-    return "--:--:--";
+  } catch (error) {
+    console.error(error);
+
+    return "N/A";
   }
 };
 
